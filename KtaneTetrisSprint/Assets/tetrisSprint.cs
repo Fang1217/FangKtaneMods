@@ -39,6 +39,7 @@ public class tetrisSprint : MonoBehaviour {
     private float elapsedTime;
     private bool started = false;
     private bool moduleSolved = false;
+	private bool activated = false;
 
     //SRS
     private TetrisSRS.TetrisBoard _tetrisBoard;
@@ -85,6 +86,7 @@ public class tetrisSprint : MonoBehaviour {
                 GetPiece();
             }
             started = true;
+            
             return true;
         };
 
@@ -96,7 +98,7 @@ public class tetrisSprint : MonoBehaviour {
 
 		if (numberDisplay.text == "0" && !moduleSolved) Solve();
 
-		if (focused)
+		if (focused && activated)
 			for (int i = 0; i < TheKeys.Count(); i++) {
 				if (Input.GetKeyDown(TheKeys[i])) {
 					handlePress(i);
@@ -121,7 +123,7 @@ public class tetrisSprint : MonoBehaviour {
 	void Start()
 	{
 		moduleId = moduleIdCounter++;
-		Module.OnActivate += delegate { int linesNeeded = FindThreshold(); targetDisplay.text = linesNeeded.ToString() + "L"; _tetrisBoard.ShowAndSetLinesCount(linesNeeded); };
+		Module.OnActivate += delegate { int linesNeeded = FindThreshold(); targetDisplay.text = linesNeeded.ToString() + "L"; _tetrisBoard.ShowAndSetLinesCount(linesNeeded); activated = true; };
 		//Module.OnActivate += delegate { _tetrisBoard.ShowAndSetLinesCount(40); };
 	}
 
@@ -234,7 +236,7 @@ public class tetrisSprint : MonoBehaviour {
 	private bool TwitchPlaysActive;
 
 	void handlePress (int keypos) {
-		if (_currentPiece != null && focused) {
+		if (_currentPiece != null && focused && activated) {
 			if (keypos % 7 == 5 && TwitchPlaysActive) SoftDrop(); 
 			else switch (keypos % 7) {         //KeyCode.LeftArrow, KeyCode.RightArrow,KeyCode.Z, KeyCode.X,KeyCode.UpArrow,KeyCode.DownArrow,KeyCode.Space
 				case 0: _currentPiece.MoveHorizontal(false); break;
