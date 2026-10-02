@@ -133,8 +133,8 @@ public class passwordDestroyer : MonoBehaviour
         double hour = Math.Floor(doubleElapsedTime / 3600);
 
 		doubleElapsedTimeDisplay =
-			(hour > 0 ?  hour.ToString("00")  + ":" + minute.ToString("00") + ":" + second.ToString("00")
-				  	  : minute.ToString("00") + ":" + (doubleElapsedTime % 60).ToString("00.00"));
+			(hour > 0 ?  hour.ToString("00")  + ":" + minute.ToString("00") + ":" + Math.Floor(doubleElapsedTime % 60).ToString("00")
+				  	  : minute.ToString("00") + ":" + (Math.Floor(doubleElapsedTime % 60 * 100) / 100).ToString("00.00"));
 
         if (pressedNumber == 0 && (elapsedTime - strikedTime)% 2400 == 0)
             Screens[0].text = "-------";
